@@ -94,6 +94,11 @@
     <!-- 添加或修改用餐人员信息对话框 -->
     <el-dialog :title="dialog.title" v-model="dialog.visible" width="500px" append-to-body>
       <el-form ref="dinerpersonFormRef" :model="form" :rules="rules" label-width="80px">
+        <el-form-item label="头像" prop="personHeadimg">
+          <div class="text-center">
+            <userAvatar/>
+          </div>
+        </el-form-item>
         <el-form-item label="工号" prop="personCode">
           <el-input v-model="form.personCode" placeholder="请输入工号" />
         </el-form-item>
