@@ -3,30 +3,32 @@
     <transition :enter-active-class="proxy?.animate.searchAnimate.enter" :leave-active-class="proxy?.animate.searchAnimate.leave">
       <div class="search" v-show="showSearch">
         <el-form :model="queryParams" ref="queryFormRef" :inline="true" label-width="68px">
+          <el-form-item label="id" v-if="false">
+            <el-input v-model="datavalue.id" style="width: 200px"/>
+          </el-form-item>
           <el-form-item label="开餐模式">
-            <el-radio-group v-model="form.mealMode">
-              <el-radio label="自选开餐">自选开餐</el-radio>
-              <el-radio label="每日开餐">每日开餐</el-radio>
-              <el-radio label="周日不开餐">周日不开餐</el-radio>
-              <el-radio label="周一到周五开餐">周一到周五开餐</el-radio>
-              <el-button type="primary" plain  @click="updateservermode" v-hasPermi="['mealmanage:mealservermode:add']">更新开餐模式</el-button>
+            <el-radio-group v-model="datavalue.serverMode">
+              <el-radio label="1">自选开餐</el-radio>
+              <el-radio label="2">每日开餐</el-radio>
+              <el-radio label="3">周日不开餐</el-radio>
+              <el-radio label="4">周一到周五开餐</el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item v-if="form.mealMode === '自选开餐'"  :inline="true" label="自选开餐日期" label-width="100px">
-            <el-checkbox-group v-model="form.selectedDays" class="checkbox-group">
-              <el-checkbox label="周一" true-label="1" checked="true">周一</el-checkbox>
-              <el-checkbox label="周二" true-label="2" checked="true">周二</el-checkbox>
-              <el-checkbox label="周三" true-label="3" checked="true">周三</el-checkbox>
-              <el-checkbox label="周四" true-label="4" checked="true">周四</el-checkbox>
-              <el-checkbox label="周五" true-label="5" checked="true">周五</el-checkbox>
-              <el-checkbox label="周六" true-label="6" checked="true">周六</el-checkbox>
-              <el-checkbox label="周日" true-label="7" checked="true">周日</el-checkbox>
+          <el-form-item v-if="datavalue.serverMode === '1'"  :inline="true" label="自选开餐日期" label-width="100px">
+            <el-checkbox-group v-model="datavalue.serverDay" class="checkbox-group">
+              <el-checkbox label="1">周一</el-checkbox>
+              <el-checkbox label="2">周二</el-checkbox>
+              <el-checkbox label="3">周三</el-checkbox>
+              <el-checkbox label="4">周四</el-checkbox>
+              <el-checkbox label="5">周五</el-checkbox>
+              <el-checkbox label="6">周六</el-checkbox>
+              <el-checkbox label="7">周日</el-checkbox>
             </el-checkbox-group>
           </el-form-item>
           <el-form-item>
             <el-form-item label="可提前报餐天数：" prop="earlyDay" label-width="125px">
-              <el-input v-model="queryParams.earlyDay" type="number" style="width: 240px" />
-              <el-button type="primary" plain  @click="updateEarlyDay" v-hasPermi="['mealmanage:mealservermode:add']">更新可提前报餐天数</el-button>
+              <el-input v-model="datavalue.earlyDay" type="number" style="width: 240px" />
+              <el-button type="primary" plain  @click="updateservermode" v-hasPermi="['mealmanage:mealservermode:add']">更新开餐模式信息</el-button>
             </el-form-item>
           </el-form-item>
         </el-form>
@@ -77,14 +79,26 @@ const data = reactive<PageData<MealservermodeForm, MealservermodeQuery>>({
   }
 });
 
+let datavalue = reactive({
+  id: "",
+  serverMode: "",
+  serverDay: [],
+  earlyDay: 0,
+})
+
+
 const { queryParams, form, rules } = toRefs(data);
 
 /** 查询开餐模式信息列表 */
 const getList = async () => {
   loading.value = true;
-  const res = await listMealservermode(queryParams.value);
-  mealservermodeList.value = res.rows;
-  total.value = res.total;
+  const res = await getMealservermode("1");
+  if (res.data) {
+    datavalue.id = res.data.id;
+    datavalue.serverMode = res.data.serverMode;
+    datavalue.serverDay = res.data.serverDay.split(",");
+    datavalue.earlyDay = res.data.earlyDay;
+  }
   loading.value = false;
 }
 
@@ -95,8 +109,21 @@ const reset = () => {
   mealservermodeFormRef.value?.resetFields();
 }
 
-const updateservermode = () => {
-  proxy?.$modal.msgSuccess("修改成功");
+const updateservermode = async () => {
+  const updateData = {
+    id: datavalue.id,
+    serverMode: datavalue.serverMode,
+    serverDay: datavalue.serverDay.join(","),
+    earlyDay: datavalue.earlyDay
+  };
+
+  const res = await updateMealservermode(updateData);
+
+  if (res && res.msg === "操作成功") {
+    proxy?.$modal.msgSuccess("修改成功");
+  } else {
+    proxy?.$modal.msgError("修改失败");
+  }
 }
 
 const updateEarlyDay = () => {

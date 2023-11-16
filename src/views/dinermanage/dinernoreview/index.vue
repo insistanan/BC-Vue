@@ -44,7 +44,6 @@
 
       <el-table v-loading="loading" :data="dinernoreviewList" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center" />
-        <el-table-column label="id" align="center" prop="id" v-if="true" />
         <el-table-column label="部门名称" align="center" prop="personName" />
         <el-table-column label="手机号" align="center" prop="personTel" />
         <el-table-column label="部门" align="center" prop="personDinerdeptid" />
