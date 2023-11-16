@@ -35,7 +35,7 @@
     </el-card>
     <!-- 添加或修改关键词对话框 -->
     <el-dialog :title="dialog.title" v-model="dialog.visible" width="500px" append-to-body>
-      <el-form ref="mealkeywordFormRef" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="mealkeywordFormRef" :model="form" :rules="rules" label-width="80px" label-position="left">
         <el-form-item label="关键词" prop="keywordName">
           <el-input v-model="form.keywordName" placeholder="请输入关键词" />
         </el-form-item>

@@ -70,7 +70,7 @@
     </el-card>
     <!-- 添加或修改菜品对话框 -->
     <el-dialog :title="dialog.title" v-model="dialog.visible" width="500px" append-to-body>
-      <el-form ref="mealfoodsFormRef" :model="form" :rules="rules" label-width="125px">
+      <el-form ref="mealfoodsFormRef" :model="form" :rules="rules" label-width="125px" label-position="left">
         <el-form-item label="菜品名称" prop="foodName">
           <el-input v-model="form.foodName" placeholder="请输入菜品名称" />
         </el-form-item>

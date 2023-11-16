@@ -44,7 +44,7 @@
     </el-card>
     <!-- 添加或修改菜品类型对话框 -->
     <el-dialog :title="dialog.title" v-model="dialog.visible" width="500px" append-to-body>
-      <el-form ref="mealfoodtypeFormRef" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="mealfoodtypeFormRef" :model="form" :rules="rules" label-width="80px" label-position="left">
         <el-form-item label="菜品类型" prop="foodtypeName">
           <el-input v-model="form.foodtypeName" placeholder="请输入菜品类型" />
         </el-form-item>

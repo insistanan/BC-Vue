@@ -49,7 +49,7 @@
     </el-card>
     <!-- 添加或修改禁止用餐日期对话框 -->
     <el-dialog :title="dialog.title" v-model="dialog.visible" width="500px" append-to-body>
-      <el-form ref="mealforbiddayFormRef" :model="form" :rules="rules" label-width="125px">
+      <el-form ref="mealforbiddayFormRef" :model="form" :rules="rules" label-width="125px" label-position="left">
         <el-form-item label="禁止用餐日期" prop="forbidDate" label-width="125px">
           <el-date-picker clearable
             v-model="form.forbidDate"

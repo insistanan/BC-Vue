@@ -2,7 +2,7 @@
   <div class="p-2">
     <transition :enter-active-class="proxy?.animate.searchAnimate.enter" :leave-active-class="proxy?.animate.searchAnimate.leave">
       <div class="search" v-show="showSearch">
-        <el-form :model="queryParams" ref="queryFormRef" :inline="true" label-width="120px">
+        <el-form :model="queryParams" ref="queryFormRef" :inline="true" label-width="120px" label-position="left">
           <el-form-item label="姓名" prop="personName">
             <el-input v-model="queryParams.personName" placeholder="请输入姓名" clearable style="width: 240px" @keyup.enter="handleQuery" />
           </el-form-item>

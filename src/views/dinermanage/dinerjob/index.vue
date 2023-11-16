@@ -64,7 +64,7 @@
     </el-card>
     <!-- 添加或修改职务设置对话框 -->
     <el-dialog :title="dialog.title" v-model="dialog.visible" width="500px" append-to-body>
-      <el-form ref="dinerjobFormRef" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="dinerjobFormRef" :model="form" :rules="rules" label-width="80px" label-position="left">
         <el-form-item label="职位名称" prop="jobName">
           <el-input v-model="form.jobName" placeholder="请输入职位名称" />
         </el-form-item>

@@ -64,7 +64,7 @@
     </el-card>
     <!-- 添加或修改用餐人员部门对话框 -->
     <el-dialog :title="dialog.title" v-model="dialog.visible" width="500px" append-to-body>
-      <el-form ref="dinerdeptFormRef" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="dinerdeptFormRef" :model="form" :rules="rules" label-width="80px" label-position="left">
         <el-form-item label="部门名称" prop="deptName">
           <el-input v-model="form.deptName" placeholder="请输入部门名称" />
         </el-form-item>

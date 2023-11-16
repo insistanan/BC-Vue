@@ -84,7 +84,7 @@
     </el-card>
     <!-- 添加或修改用餐时段对话框 -->
     <el-dialog :title="dialog.title" v-model="dialog.visible" width="500px" append-to-body>
-      <el-form ref="mealservetimeFormRef" :model="form" :rules="rules" label-width="108px">
+      <el-form ref="mealservetimeFormRef" :model="form" :rules="rules" label-width="108px" label-position="left">
         <el-form-item label="时段名称" prop="servetimeName">
           <el-input v-model="form.servetimeName" placeholder="请输入时段名称" />
         </el-form-item>

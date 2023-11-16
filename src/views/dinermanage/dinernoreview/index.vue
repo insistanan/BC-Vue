@@ -75,7 +75,7 @@
     </el-card>
     <!-- 添加或修改免审核人员对话框 -->
     <el-dialog :title="dialog.title" v-model="dialog.visible" width="500px" append-to-body>
-      <el-form ref="dinernoreviewFormRef" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="dinernoreviewFormRef" :model="form" :rules="rules" label-width="80px" label-position="left">
         <el-form-item label="部门名称" prop="personName">
           <el-input v-model="form.personName" placeholder="请输入部门名称" />
         </el-form-item>
