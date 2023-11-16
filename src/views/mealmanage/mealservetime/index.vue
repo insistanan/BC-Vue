@@ -101,10 +101,24 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="开始时间" prop="servetimeBegin">
-          <el-input v-model="form.servetimeBegin" placeholder="请输入开始时间" />
+          <el-col :span="5">
+            <el-input v-model="form.servetimeBegin"/>
+          </el-col>
+          <el-col class="line" :span="2">时</el-col>
+          <el-col :span="5">
+            <el-input v-model="form.servetimeBegin"/>
+          </el-col>
+          <el-col class="line" :span="2">分</el-col>
         </el-form-item>
         <el-form-item label="结束时间" prop="servetimeEnd">
-          <el-input v-model="form.servetimeEnd" placeholder="请输入结束时间" />
+          <el-col :span="5">
+            <el-input v-model="form.servetimeEnd"/>
+          </el-col>
+          <el-col class="line" :span="2">时</el-col>
+          <el-col :span="5">
+            <el-input v-model="form.servetimeEnd"/>
+          </el-col>
+          <el-col class="line" :span="2">分</el-col>
         </el-form-item>
         <el-form-item label="报餐提醒状态" prop="servetimeRemindstatus">
           <el-radio-group v-model="form.servetimeRemindstatus">
@@ -116,13 +130,25 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="报餐提醒时间" prop="servetimeRemind">
-          <el-input v-model="form.servetimeRemind" placeholder="请输入报餐提醒时间" />
+          <el-col :span="5">
+            <el-input v-model="form.servetimeRemind"/>
+          </el-col>
+          <el-col class="line" :span="2">时</el-col>
+          <el-col :span="5">
+            <el-input v-model="form.servetimeRemind"/>
+          </el-col>
         </el-form-item>
         <el-form-item label="报餐截止天数" prop="servetimeRepotrendday">
           <el-input v-model="form.servetimeRepotrendday" type="number" placeholder="请输入报餐截止天数" />
         </el-form-item>
         <el-form-item label="报餐截止时间" prop="servetimeRepotrendtime">
-          <el-input v-model="form.servetimeRepotrendtime" placeholder="请输入报餐截止时间" />
+          <el-col :span="5">
+            <el-input v-model="form.servetimeRepotrendtime"/>
+          </el-col>
+          <el-col class="line" :span="2">时</el-col>
+          <el-col :span="5">
+            <el-input v-model="form.servetimeRepotrendtime"/>
+          </el-col>
         </el-form-item>
       </el-form>
       <template #footer>

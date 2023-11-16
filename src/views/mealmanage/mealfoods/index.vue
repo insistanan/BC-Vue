@@ -6,6 +6,16 @@
           <el-form-item label="菜品名称" prop="foodName">
             <el-input v-model="queryParams.foodName" placeholder="请输入菜品名称" clearable style="width: 240px" @keyup.enter="handleQuery" />
           </el-form-item>
+          <el-form-item label="菜品类型" prop="foodTypeid">
+            <el-select v-model="queryParams.foodTypeid" placeholder="请选择菜品类型" clearable>
+              <el-option
+                v-for="dict in bc_mealfoodtype"
+                :key="dict.value"
+                :label="dict.label"
+                :value="dict.value"
+              />
+            </el-select>
+          </el-form-item>
           <el-form-item>
             <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
             <el-button icon="Refresh" @click="resetQuery">重置</el-button>
@@ -37,10 +47,18 @@
         <el-table-column type="selection" width="55" align="center" />
         <el-table-column label="菜品名称" align="center" prop="foodName" />
         <el-table-column label="菜品价格" align="center" prop="foodPrice" />
-        <el-table-column label="菜品上架时间段" align="center" prop="foodGrounding" />
-        <el-table-column label="菜品上架日期" align="center" prop="foodServerday" />
-        <el-table-column label="菜品类型" align="center" prop="foodTypeid" />
-        <el-table-column label="是否自动上架" align="center" prop="autoGrounding">
+        <el-table-column label="用餐时间段" align="center" prop="foodGrounding">
+          <template #default="scope">
+            <dict-tag :options="bc_mealservetime" :value="scope.row.foodGrounding"/>
+          </template>
+        </el-table-column>
+        <el-table-column label="菜品循环日期" align="center" prop="foodServerday" />
+        <el-table-column label="菜品类型" align="center" prop="foodTypeid">
+          <template #default="scope">
+            <dict-tag :options="bc_mealfoodtype" :value="scope.row.foodTypeid"/>
+          </template>
+        </el-table-column>
+        <el-table-column label="自动上架" align="center" prop="autoGrounding">
           <template #default="scope">
             <dict-tag :options="sys_yes_no" :value="scope.row.autoGrounding"/>
           </template>
@@ -48,6 +66,22 @@
         <el-table-column label="限购份数" align="center" prop="limitNum" />
         <el-table-column label="预设库存" align="center" prop="stockNum" />
         <el-table-column label="首份减免" align="center" prop="firstReduce" />
+        <el-table-column label="描述" align="center" prop="explain" />
+        <el-table-column label="开放类型" align="center" prop="openType">
+          <template #default="scope">
+            <dict-tag :options="sys_open_range" :value="scope.row.openType"/>
+          </template>
+        </el-table-column>
+        <el-table-column label="开放部门" align="center" prop="enDept">
+          <template #default="scope">
+            <dict-tag :options="bc_dinerdept" :value="scope.row.enDept"/>
+          </template>
+        </el-table-column>
+        <el-table-column label="开放职务" align="center" prop="enJob">
+          <template #default="scope">
+            <dict-tag :options="bc_dinerjob" :value="scope.row.enJob"/>
+          </template>
+        </el-table-column>
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
           <template #default="scope">
             <el-tooltip content="修改" placement="top">
@@ -70,21 +104,43 @@
     </el-card>
     <!-- 添加或修改菜品对话框 -->
     <el-dialog :title="dialog.title" v-model="dialog.visible" width="500px" append-to-body>
-      <el-form ref="mealfoodsFormRef" :model="form" :rules="rules" label-width="125px" label-position="left">
+      <el-form ref="mealfoodsFormRef" :model="form" :rules="rules" label-width="120px">
         <el-form-item label="菜品名称" prop="foodName">
           <el-input v-model="form.foodName" placeholder="请输入菜品名称" />
         </el-form-item>
         <el-form-item label="菜品价格" prop="foodPrice">
           <el-input v-model="form.foodPrice" placeholder="请输入菜品价格" />
         </el-form-item>
-        <el-form-item label="菜品上架时间段" prop="foodGrounding">
-          <el-input v-model="form.foodGrounding" placeholder="请选择菜品上架时间段" />
+        <el-form-item label="用餐时间段" prop="foodGrounding">
+          <el-select v-model="form.foodGrounding" placeholder="请选择菜品用餐时间段">
+            <el-option
+              v-for="dict in bc_mealservetime"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
+            ></el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="菜品上架日期" prop="foodServerday">
-          <el-input v-model="form.foodServerday" placeholder="请输入菜品上架日期" />
+        <el-form-item label="菜品循环日期">
+          <el-checkbox-group v-model="form.foodServerday" size="small">
+            <el-checkbox-button label="周一" key="1" name="type"></el-checkbox-button>
+            <el-checkbox-button label="周二" key="2" name="type"></el-checkbox-button>
+            <el-checkbox-button label="周三" key="3" name="type"></el-checkbox-button>
+            <el-checkbox-button label="周四" key="4" name="type"></el-checkbox-button>
+            <el-checkbox-button label="周五" key="5" name="type"></el-checkbox-button>
+            <el-checkbox-button label="周六" key="6" name="type"></el-checkbox-button>
+            <el-checkbox-button label="周日" key="7" name="type"></el-checkbox-button>
+          </el-checkbox-group>
         </el-form-item>
         <el-form-item label="菜品类型" prop="foodTypeid">
-          <el-input v-model="form.foodTypeid" placeholder="请输入菜品类型" />
+          <el-select v-model="form.foodTypeid" placeholder="请选择菜品类型">
+            <el-option
+              v-for="dict in bc_mealfoodtype"
+              :key="dict.value"
+              :label="dict.label"
+              :value="parseInt(dict.value)"
+            ></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="是否自动上架" prop="autoGrounding">
           <el-select v-model="form.autoGrounding" placeholder="请选择是否自动上架">
@@ -97,13 +153,13 @@
           </el-select>
         </el-form-item>
         <el-form-item label="限购份数" prop="limitNum">
-          <el-input v-model="form.limitNum" type="number" placeholder="请输入限购份数" />
+          <el-input v-model="form.limitNum" placeholder="请输入限购份数" />
         </el-form-item>
         <el-form-item label="预设库存" prop="stockNum">
-          <el-input v-model="form.stockNum" type="number"  placeholder="请输入预设库存" />
+          <el-input v-model="form.stockNum" placeholder="请输入预设库存" />
         </el-form-item>
-        <el-form-item label="首份减免" prop="firstReduce">
-          <el-input v-model="form.firstReduce" type="number" placeholder="请输入首份减免" />
+        <el-form-item label="第一份减免" prop="firstReduce">
+          <el-input v-model="form.firstReduce" placeholder="请输入第一份减免" />
         </el-form-item>
         <el-form-item label="菜品描述" prop="explain">
           <el-input v-model="form.explain" type="textarea" placeholder="请输入内容" />
@@ -119,10 +175,24 @@
           </el-select>
         </el-form-item>
         <el-form-item label="开放部门" prop="enDept">
-          <el-input v-model="form.enDept" placeholder="请输入开放部门" />
+          <el-select v-model="form.enDept" placeholder="请选择开放部门">
+            <el-option
+              v-for="dict in bc_dinerdept"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
+            ></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="开放职务" prop="enJob">
-          <el-input v-model="form.enJob" placeholder="请输入开放职务" />
+          <el-select v-model="form.enJob" placeholder="请选择开放职务">
+            <el-option
+              v-for="dict in bc_dinerjob"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
+            ></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="菜品图片" prop="foodImg">
           <image-upload v-model="form.foodImg"/>
@@ -143,7 +213,7 @@ import { listMealfoods, getMealfoods, delMealfoods, addMealfoods, updateMealfood
 import { MealfoodsVO, MealfoodsQuery, MealfoodsForm } from '@/api/mealmanage/mealfoods/types';
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
-const { sys_open_range, sys_yes_no } = toRefs<any>(proxy?.useDict('sys_open_range', 'sys_yes_no'));
+const { sys_open_range, bc_mealservetime, bc_dinerdept, bc_dinerjob, bc_mealfoodtype, sys_yes_no } = toRefs<any>(proxy?.useDict('sys_open_range', 'bc_mealservetime', 'bc_dinerdept', 'bc_dinerjob', 'bc_mealfoodtype', 'sys_yes_no'));
 
 const mealfoodsList = ref<MealfoodsVO[]>([]);
 const buttonLoading = ref(false);
@@ -212,13 +282,13 @@ const data = reactive<PageData<MealfoodsForm, MealfoodsQuery>>({
       { required: true, message: "菜品价格不能为空", trigger: "blur" }
     ],
     foodGrounding: [
-      { required: true, message: "菜品上架时间段，1-早餐，2-午餐，3-晚餐不能为空", trigger: "blur" }
+      { required: true, message: "菜品用餐时间段，1-早餐，2-午餐，3-晚餐不能为空", trigger: "change" }
     ],
     foodServerday: [
-      { required: true, message: "菜品上架日期，1-7代表周一至周日不能为空", trigger: "blur" }
+      { required: true, message: "菜品菜品循环日期，1-7代表周一至周日不能为空", trigger: "blur" }
     ],
     foodTypeid: [
-      { required: true, message: "菜品类型不能为空", trigger: "blur" }
+      { required: true, message: "菜品类型不能为空", trigger: "change" }
     ],
     autoGrounding: [
       { required: true, message: "是否自动上架，0-是，1-否不能为空", trigger: "change" }
@@ -230,7 +300,7 @@ const data = reactive<PageData<MealfoodsForm, MealfoodsQuery>>({
       { required: true, message: "预设库存不能为空", trigger: "blur" }
     ],
     firstReduce: [
-      { required: true, message: "首份减免不能为空", trigger: "blur" }
+      { required: true, message: "第一份减免不能为空", trigger: "blur" }
     ],
     explain: [
       { required: true, message: "菜品描述不能为空", trigger: "blur" }
@@ -239,10 +309,10 @@ const data = reactive<PageData<MealfoodsForm, MealfoodsQuery>>({
       { required: true, message: "开放类型，0-指定部门开放，1-全部开放不能为空", trigger: "change" }
     ],
     enDept: [
-      { required: true, message: "开放部门不能为空", trigger: "blur" }
+      { required: true, message: "开放部门不能为空", trigger: "change" }
     ],
     enJob: [
-      { required: true, message: "开放职务不能为空", trigger: "blur" }
+      { required: true, message: "开放职务不能为空", trigger: "change" }
     ],
     foodImg: [
       { required: true, message: "菜品图片不能为空", trigger: "blur" }
