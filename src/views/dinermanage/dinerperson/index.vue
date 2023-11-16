@@ -6,8 +6,8 @@
           <el-form-item label="工号" prop="personCode">
             <el-input v-model="queryParams.personCode" placeholder="请输入工号" clearable style="width: 240px" @keyup.enter="handleQuery" />
           </el-form-item>
-          <el-form-item label="昵称" prop="personName">
-            <el-input v-model="queryParams.personName" placeholder="请输入昵称" clearable style="width: 240px" @keyup.enter="handleQuery" />
+          <el-form-item label="名称" prop="personName">
+            <el-input v-model="queryParams.personName" placeholder="请输入名称" clearable style="width: 240px" @keyup.enter="handleQuery" />
           </el-form-item>
           <el-form-item label="手机号" prop="personTel">
             <el-input v-model="queryParams.personTel" placeholder="请输入手机号" clearable style="width: 240px" @keyup.enter="handleQuery" />
@@ -16,15 +16,29 @@
             <el-input v-model="queryParams.personCardno" placeholder="请输入职工卡号" clearable style="width: 240px" @keyup.enter="handleQuery" />
           </el-form-item>
           <el-form-item label="部门" prop="personDinerdeptid">
-            <el-input v-model="queryParams.personDinerdeptid" placeholder="请输入部门" clearable style="width: 240px" @keyup.enter="handleQuery" />
+            <el-select v-model="queryParams.personDinerdeptid" placeholder="请选择部门" clearable>
+              <el-option
+                v-for="dict in bc_dinerdept"
+                :key="dict.value"
+                :label="dict.label"
+                :value="dict.value"
+              />
+            </el-select>
           </el-form-item>
           <el-form-item label="职务" prop="personDinerjobid">
-            <el-input v-model="queryParams.personDinerjobid" placeholder="请输入职务" clearable style="width: 240px" @keyup.enter="handleQuery" />
+            <el-select v-model="queryParams.personDinerjobid" placeholder="请选择职务" clearable>
+              <el-option
+                v-for="dict in bc_dinerjob"
+                :key="dict.value"
+                :label="dict.label"
+                :value="dict.value"
+              />
+            </el-select>
           </el-form-item>
           <el-form-item label="状态" prop="status">
             <el-select v-model="queryParams.status" placeholder="请选择状态" clearable>
               <el-option
-                v-for="dict in sys_data_status"
+                v-for="dict in sys_common_status"
                 :key="dict.value"
                 :label="dict.label"
                 :value="dict.value"
@@ -60,15 +74,24 @@
 
       <el-table v-loading="loading" :data="dinerpersonList" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center" />
-        <el-table-column label="头像" align="center" prop="personHeadimg" />
         <el-table-column label="工号" align="center" prop="personCode" />
-        <el-table-column label="昵称" align="center" prop="personName" />
-        <el-table-column label="部门" align="center" prop="personDinerdeptid" />
-        <el-table-column label="职务" align="center" prop="personDinerjobid" />
+        <el-table-column label="名称" align="center" prop="personName" />
         <el-table-column label="手机号" align="center" prop="personTel" />
+        <el-table-column label="职工卡号" align="center" prop="personCardno" />
+        <el-table-column label="部门" align="center" prop="personDinerdeptid">
+          <template #default="scope">
+            <dict-tag :options="bc_dinerdept" :value="scope.row.personDinerdeptid"/>
+          </template>
+        </el-table-column>
+        <el-table-column label="职务" align="center" prop="personDinerjobid">
+          <template #default="scope">
+            <dict-tag :options="bc_dinerjob" :value="scope.row.personDinerjobid"/>
+          </template>
+        </el-table-column>
+        <el-table-column label="头像" align="center" prop="personHeadimg" />
         <el-table-column label="状态" align="center" prop="status">
           <template #default="scope">
-            <dict-tag :options="sys_data_status" :value="scope.row.status"/>
+            <dict-tag :options="sys_common_status" :value="scope.row.status"/>
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -84,26 +107,21 @@
       </el-table>
 
       <pagination
-          v-show="total>0"
-          :total="total"
-          v-model:page="queryParams.pageNum"
-          v-model:limit="queryParams.pageSize"
-          @pagination="getList"
+        v-show="total>0"
+        :total="total"
+        v-model:page="queryParams.pageNum"
+        v-model:limit="queryParams.pageSize"
+        @pagination="getList"
       />
     </el-card>
     <!-- 添加或修改用餐人员信息对话框 -->
     <el-dialog :title="dialog.title" v-model="dialog.visible" width="500px" append-to-body>
       <el-form ref="dinerpersonFormRef" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="头像" prop="personHeadimg">
-          <div class="text-center">
-            <userAvatar/>
-          </div>
-        </el-form-item>
         <el-form-item label="工号" prop="personCode">
           <el-input v-model="form.personCode" placeholder="请输入工号" />
         </el-form-item>
-        <el-form-item label="昵称" prop="personName">
-          <el-input v-model="form.personName" placeholder="请输入昵称" />
+        <el-form-item label="名称" prop="personName">
+          <el-input v-model="form.personName" placeholder="请输入名称" />
         </el-form-item>
         <el-form-item label="手机号" prop="personTel">
           <el-input v-model="form.personTel" placeholder="请输入手机号" />
@@ -112,10 +130,24 @@
           <el-input v-model="form.personCardno" placeholder="请输入职工卡号" />
         </el-form-item>
         <el-form-item label="部门" prop="personDinerdeptid">
-          <el-input v-model="form.personDinerdeptid" placeholder="请输入部门" />
+          <el-select v-model="form.personDinerdeptid" placeholder="请选择部门">
+            <el-option
+              v-for="dict in bc_dinerdept"
+              :key="dict.value"
+              :label="dict.label"
+              :value="parseInt(dict.value)"
+            ></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="职务" prop="personDinerjobid">
-          <el-input v-model="form.personDinerjobid" placeholder="请输入职务" />
+          <el-select v-model="form.personDinerjobid" placeholder="请选择职务">
+            <el-option
+              v-for="dict in bc_dinerjob"
+              :key="dict.value"
+              :label="dict.label"
+              :value="parseInt(dict.value)"
+            ></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="头像" prop="personHeadimg">
           <el-input v-model="form.personHeadimg" placeholder="请输入头像" />
@@ -123,9 +155,9 @@
         <el-form-item label="状态" prop="status">
           <el-radio-group v-model="form.status">
             <el-radio
-                v-for="dict in sys_data_status"
-                :key="dict.value"
-                :label="dict.value"
+              v-for="dict in sys_common_status"
+              :key="dict.value"
+              :label="dict.value"
             >{{dict.label}}</el-radio>
           </el-radio-group>
         </el-form-item>
@@ -145,7 +177,7 @@ import { listDinerperson, getDinerperson, delDinerperson, addDinerperson, update
 import { DinerpersonVO, DinerpersonQuery, DinerpersonForm } from '@/api/dinermanage/dinerperson/types';
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
-const { sys_data_status } = toRefs<any>(proxy?.useDict('sys_data_status'));
+const { sys_common_status, bc_dinerdept, bc_dinerjob } = toRefs<any>(proxy?.useDict('sys_common_status', 'bc_dinerdept', 'bc_dinerjob'));
 
 const dinerpersonList = ref<DinerpersonVO[]>([]);
 const buttonLoading = ref(false);
@@ -199,7 +231,7 @@ const data = reactive<PageData<DinerpersonForm, DinerpersonQuery>>({
       { required: true, message: "工号不能为空", trigger: "blur" }
     ],
     personName: [
-      { required: true, message: "昵称不能为空", trigger: "blur" }
+      { required: true, message: "名称不能为空", trigger: "blur" }
     ],
     personTel: [
       { required: true, message: "手机号不能为空", trigger: "blur" }
@@ -208,10 +240,10 @@ const data = reactive<PageData<DinerpersonForm, DinerpersonQuery>>({
       { required: true, message: "职工卡号不能为空", trigger: "blur" }
     ],
     personDinerdeptid: [
-      { required: true, message: "部门不能为空", trigger: "blur" }
+      { required: true, message: "部门不能为空", trigger: "change" }
     ],
     personDinerjobid: [
-      { required: true, message: "职务不能为空", trigger: "blur" }
+      { required: true, message: "职务不能为空", trigger: "change" }
     ],
     personHeadimg: [
       { required: true, message: "头像不能为空", trigger: "blur" }
