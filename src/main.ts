@@ -33,7 +33,11 @@ import { parseTime, addDateRange, handleTree, selectDictLabel, selectDictLabels 
 // 国际化
 import i18n from '@/lang/index';
 
+import Elementui from './elementui';
+import formConfig from "./elementui";
+
 const app = createApp(App);
+app.use(Elementui, { ...formConfig });
 // 全局方法挂载
 app.config.globalProperties.useDict = useDict;
 app.config.globalProperties.getConfigKey = getConfigKey;
