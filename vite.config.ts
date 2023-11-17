@@ -22,11 +22,11 @@ export default defineConfig(({ mode, command }: ConfigEnv): UserConfig => {
     plugins: createPlugins(env, command === 'build'),
     server: {
       host: '0.0.0.0',
-      port: Number(env.VITE_APP_PORT),
+      port: 1143,
       open: true,
       proxy: {
         [env.VITE_APP_BASE_API]: {
-          target: 'http://localhost:8080',
+          target: 'http://localhost:8081',
           changeOrigin: true,
           rewrite: (path) => path.replace(new RegExp('^' + env.VITE_APP_BASE_API), '')
         }
