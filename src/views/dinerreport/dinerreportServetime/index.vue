@@ -10,6 +10,7 @@
                 type="daterange"
                 align="right"
                 unlink-panels
+                value-format="YYYY-MM-DD"
                 range-separator="至"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
@@ -36,7 +37,7 @@
       </template>
       <el-table :data="tableData" style="width: 100%">
         <el-table-column
-          :label="部门"
+          label="部门"
           prop="deptName"
           width="150"
         ></el-table-column>
@@ -44,6 +45,7 @@
           v-for="(servetime, servetimeName) in servetimeNameMap"
           :key="servetimeName"
           :label="servetimeName"
+          header-align="center"
         >
           <el-table-column
             v-for="(column, columnName) in servetime"
@@ -51,7 +53,6 @@
             :prop="columnName"
             :label="column"
             width="120"
-            :header-align="servetimeName === 'servetime1' || servetimeName === 'servetime2' ? 'center' : ''"
           ></el-table-column>
         </el-table-column>
       </el-table>
@@ -63,7 +64,6 @@
 import { getreport } from '@/api/dinerreport/dinerreportServetime';
 import { DinerreportServetimeVO, DinerreportServetimeQuery, DinerreportServetimeForm } from '@/api/dinerreport/dinerreportServetime/types';
 import { ElDatePicker } from 'element-plus';
-import {listDinerdept} from "@/api/dinermanage/dinerdept";
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 
@@ -95,6 +95,10 @@ const initFormData: DinerreportServetimeForm = {
 const data = reactive<PageData<DinerreportServetimeForm, DinerreportServetimeQuery>>({
   form: {...initFormData},
   queryParams: {
+    pageNum: 1,
+    pageSize: 10,
+    begindate: null,
+    enddate: null,
     params: {
     }
   },
@@ -110,43 +114,6 @@ const props = defineProps(['deptNameColumnName']);
 const tableData = ref([]);
 const servetimeNameMap = ref({});
 
-onMounted(async () => {
-  // 模拟异步获取数据，实际情况中应该使用真实的 API 请求
-  // const simulatedApiResponse = await simulateApiCall();
-  // tableData.value = simulatedApiResponse.tableData;
-  // servetimeNameMap.value = simulatedApiResponse.servetimeNameMap;
-});
-
-// 模拟 API 调用
-async function simulateApiCall() {
-  // 模拟后端返回的数据
-  const simulatedData = {
-    tableData: [{
-      deptName: '默认部门',
-      dinertotalnum: '10',
-      usedinernum: '8',
-      unusedinernum: '9'
-    }
-    ],
-    servetimeNameMap: {
-      早餐: {
-        dinertotalnum: '已报餐数',
-        usedinernum: '实际就餐数',
-        unusedinernum: '未实际就餐数',
-      },
-      午餐: {
-        dinertotalnum: '已报餐数',
-        usedinernum: '实际就餐数',
-        unusedinernum: '未实际就餐数',
-      }
-    }
-  };
-
-  // 模拟异步延时
-  await new Promise(resolve => setTimeout(resolve, 1000));
-
-  return simulatedData;
-}
 const pickerOptions = ref({
   shortcuts: [
     {
@@ -196,16 +163,15 @@ const reset = () => {
 }
 
 const handleDateChange = () => {
-  // Update queryParams with the selected date range
-  queryParams.value.params.startDate = value2.value[0];
-  queryParams.value.params.endDate = value2.value[1];
+  queryParams.value.begindate = value2.value[0];
+  queryParams.value.enddate = value2.value[1];
 }
 
 const report = async () => {
   loading.value = true;
   const simulatedApiResponse = await getreport(queryParams.value);
-  tableData.value = simulatedApiResponse.tableData;
-  servetimeNameMap.value = simulatedApiResponse.servetimeNameMap;
+  tableData.value = JSON.parse(simulatedApiResponse.tableData);
+  servetimeNameMap.value = JSON.parse(simulatedApiResponse.servetimeNameMap);
   loading.value = false;
 }
 

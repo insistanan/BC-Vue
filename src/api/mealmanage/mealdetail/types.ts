@@ -7,7 +7,7 @@ export interface MealdetailVO {
   /**
    * 用餐时段
    */
-  foodGrounding: string | number;
+  foodGrounding: number;
 
   /**
    * 部门。部门id
@@ -33,6 +33,11 @@ export interface MealdetailVO {
    * 金额
    */
   sumPrice: number;
+
+  /**
+   * 用户ID
+   */
+  personId: string | number;
 
   /**
    * 订餐人姓名
@@ -85,7 +90,7 @@ export interface MealdetailForm extends BaseEntity {
   /**
    * 用餐时段
    */
-  foodGrounding?: string;
+  foodGrounding?: number;
 
   /**
    * 部门。部门id
@@ -111,6 +116,11 @@ export interface MealdetailForm extends BaseEntity {
    * 金额
    */
   sumPrice?: number;
+
+  /**
+   * 用户ID
+   */
+  personId?: string | number;
 
   /**
    * 订餐人姓名
@@ -159,7 +169,7 @@ export interface MealdetailQuery extends PageQuery {
   /**
    * 用餐时段
    */
-  foodGrounding?: string;
+  foodGrounding?: number;
 
   /**
    * 部门。部门id
@@ -185,6 +195,11 @@ export interface MealdetailQuery extends PageQuery {
    * 金额
    */
   sumPrice?: number;
+
+  /**
+   * 用户ID
+   */
+  personId?: string | number;
 
   /**
    * 订餐人姓名

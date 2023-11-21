@@ -3,19 +3,21 @@
     <transition :enter-active-class="proxy?.animate.searchAnimate.enter" :leave-active-class="proxy?.animate.searchAnimate.leave">
       <div class="search" v-show="showSearch">
         <el-form :model="queryParams" ref="queryFormRef" :inline="true" label-width="68px">
-          <el-form-item label="报餐时间" prop="bcTime">
-            <el-date-picker clearable
-                            v-model="queryParams.bcTime"
-                            type="date"
-                            value-format="YYYY-MM-DD"
-                            placeholder="请选择报餐时间"
-            />
+          <el-form-item label="用餐时段" prop="foodGrounding">
+            <el-select v-model="queryParams.foodGrounding" placeholder="请选择用餐时段" clearable>
+              <el-option
+                v-for="dict in bc_mealservetime"
+                :key="dict.value"
+                :label="dict.label"
+                :value="dict.value"
+              />
+            </el-select>
           </el-form-item>
           <el-form-item label="姓名" prop="customerName">
-            <el-input v-model="queryParams.customerName" placeholder="请输入订餐人姓名" clearable style="width: 240px" @keyup.enter="handleQuery" />
+            <el-input v-model="queryParams.customerName" placeholder="请输入姓名" clearable style="width: 240px" @keyup.enter="handleQuery" />
           </el-form-item>
           <el-form-item label="联系电话" prop="customerPhone">
-            <el-input v-model="queryParams.customerPhone" placeholder="请输入订餐人联系电话" clearable style="width: 240px" @keyup.enter="handleQuery" />
+            <el-input v-model="queryParams.customerPhone" placeholder="请输入联系电话" clearable style="width: 240px" @keyup.enter="handleQuery" />
           </el-form-item>
           <el-form-item label="部门" prop="deptId">
             <el-select v-model="queryParams.deptId" placeholder="请选择部门" clearable>
@@ -37,38 +39,39 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item label="用餐时段" prop="foodGrounding">
-            <el-select v-model="queryParams.foodGrounding" placeholder="请选择用餐时段" clearable>
+          <el-form-item label="用餐类型" prop="foodTypeid">
+            <el-select v-model="queryParams.foodTypeid" placeholder="请选择用餐类型" clearable>
               <el-option
-                v-for="dict in bc_mealservetime"
+                v-for="dict in bc_mealfoodtype"
                 :key="dict.value"
                 :label="dict.label"
                 :value="dict.value"
               />
             </el-select>
           </el-form-item>
-          <el-form-item label="用餐状态" prop="dinnerStatus">
-            <el-select v-model="queryParams.dinnerStatus" placeholder="请选择用餐状态" clearable>
-              <el-option
-                v-for="dict in bc_dinnerStatus"
-                :key="dict.value"
-                :label="dict.label"
-                :value="dict.value"
-              />
-            </el-select>
+          <el-form-item label="订单明细" prop="orderId">
+            <el-input v-model="queryParams.orderId" placeholder="请输入订单明细" clearable style="width: 240px" @keyup.enter="handleQuery" />
+          </el-form-item>
+          <el-form-item label="金额" prop="sumPrice">
+            <el-input v-model="queryParams.sumPrice" placeholder="请输入金额" clearable style="width: 240px" @keyup.enter="handleQuery" />
           </el-form-item>
 
-<!--          <el-form-item label="用餐日期" prop="dinnerTime">-->
-<!--            <el-date-picker clearable-->
-<!--              v-model="queryParams.dinnerTime"-->
-<!--              type="date"-->
-<!--              value-format="YYYY-MM-DD"-->
-<!--              placeholder="请选择用餐日期"-->
-<!--            />-->
-<!--          </el-form-item>-->
-<!--          <el-form-item label="核销时间" prop="verificationTime">-->
-<!--            <el-input v-model="queryParams.verificationTime" placeholder="请输入核销时间" clearable style="width: 240px" @keyup.enter="handleQuery" />-->
-<!--          </el-form-item>-->
+          <el-form-item label="用餐日期" prop="dinnerTime">
+            <el-date-picker clearable
+              v-model="queryParams.dinnerTime"
+              type="date"
+              value-format="YYYY-MM-DD"
+              placeholder="请选择用餐日期"
+            />
+          </el-form-item>
+          <el-form-item label="报餐时间" prop="bcTime">
+            <el-date-picker clearable
+              v-model="queryParams.bcTime"
+              type="date"
+              value-format="YYYY-MM-DD"
+              placeholder="请选择报餐时间"
+            />
+          </el-form-item>
           <el-form-item>
             <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
             <el-button icon="Refresh" @click="resetQuery">重置</el-button>
@@ -83,12 +86,12 @@
           <el-col :span="1.5">
             <el-button type="primary" plain icon="Plus" @click="handleAdd" v-hasPermi="['mealmanage:mealdetail:add']">新增</el-button>
           </el-col>
-<!--          <el-col :span="1.5">-->
-<!--            <el-button type="success" plain icon="Edit" :disabled="single" @click="handleUpdate()" v-hasPermi="['mealmanage:mealdetail:edit']">修改</el-button>-->
-<!--          </el-col>-->
-<!--          <el-col :span="1.5">-->
-<!--            <el-button type="danger" plain icon="Delete" :disabled="multiple" @click="handleDelete()" v-hasPermi="['mealmanage:mealdetail:remove']">删除</el-button>-->
-<!--          </el-col>-->
+          <el-col :span="1.5">
+            <el-button type="success" plain icon="Edit" :disabled="single" @click="handleUpdate()" v-hasPermi="['mealmanage:mealdetail:edit']">修改</el-button>
+          </el-col>
+          <el-col :span="1.5">
+            <el-button type="danger" plain icon="Delete" :disabled="multiple" @click="handleDelete()" v-hasPermi="['mealmanage:mealdetail:remove']">删除</el-button>
+          </el-col>
           <el-col :span="1.5">
             <el-button type="warning" plain icon="Download" @click="handleExport" v-hasPermi="['mealmanage:mealdetail:export']">导出</el-button>
           </el-col>
@@ -113,8 +116,6 @@
             <dict-tag :options="bc_dinerjob" :value="scope.row.jobId"/>
           </template>
         </el-table-column>
-        <el-table-column label="订餐人姓名" align="center" prop="customerName" />
-        <el-table-column label="联系电话" align="center" prop="customerPhone" />
         <el-table-column label="用餐类型" align="center" prop="foodTypeid">
           <template #default="scope">
             <dict-tag :options="bc_mealfoodtype" :value="scope.row.foodTypeid"/>
@@ -122,6 +123,9 @@
         </el-table-column>
         <el-table-column label="订单明细" align="center" prop="orderId" />
         <el-table-column label="金额" align="center" prop="sumPrice" />
+        <el-table-column label="用户" align="center" prop="personId" />
+        <el-table-column label="姓名" align="center" prop="customerName" />
+        <el-table-column label="联系电话" align="center" prop="customerPhone" />
         <el-table-column label="用餐日期" align="center" prop="dinnerTime" width="180">
           <template #default="scope">
             <span>{{ parseTime(scope.row.dinnerTime, '{y}-{m}-{d}') }}</span>
@@ -134,18 +138,22 @@
             <span>{{ parseTime(scope.row.bcTime, '{y}-{m}-{d}') }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="核销时间" align="center" prop="verificationTime" />
-<!--        <el-table-column label="状态" align="center" prop="status" />-->
-<!--        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">-->
-<!--          <template #default="scope">-->
-<!--            <el-tooltip content="修改" placement="top">-->
-<!--              <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['mealmanage:mealdetail:edit']"></el-button>-->
-<!--            </el-tooltip>-->
-<!--            <el-tooltip content="删除" placement="top">-->
-<!--              <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['mealmanage:mealdetail:remove']"></el-button>-->
-<!--            </el-tooltip>-->
-<!--          </template-->
-<!--        </el-table-column>-->
+        <el-table-column label="核销时间" align="center" prop="verificationTime" width="180">
+          <template #default="scope">
+            <span>{{ parseTime(scope.row.verificationTime, '{y}-{m}-{d}') }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="状态" align="center" prop="status" />
+        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+          <template #default="scope">
+            <el-tooltip content="修改" placement="top">
+              <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['mealmanage:mealdetail:edit']"></el-button>
+            </el-tooltip>
+            <el-tooltip content="删除" placement="top">
+              <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['mealmanage:mealdetail:remove']"></el-button>
+            </el-tooltip>
+          </template>
+        </el-table-column>
       </el-table>
 
       <pagination
@@ -165,7 +173,7 @@
                 v-for="dict in bc_mealservetime"
                 :key="dict.value"
                 :label="dict.label"
-                :value="dict.value"
+                :value="parseInt(dict.value)"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -205,11 +213,14 @@
         <el-form-item label="金额" prop="sumPrice">
           <el-input v-model="form.sumPrice" placeholder="请输入金额" />
         </el-form-item>
-        <el-form-item label="订餐人姓名" prop="customerName">
-          <el-input v-model="form.customerName" placeholder="请输入订餐人姓名" />
+        <el-form-item label="用户" prop="personId">
+          <el-input v-model="form.personId" placeholder="请输入用户" />
         </el-form-item>
-        <el-form-item label="订餐人联系电话" prop="customerPhone">
-          <el-input v-model="form.customerPhone" placeholder="请输入订餐人联系电话" />
+        <el-form-item label="姓名" prop="customerName">
+          <el-input v-model="form.customerName" placeholder="请输入姓名" />
+        </el-form-item>
+        <el-form-item label="联系电话" prop="customerPhone">
+          <el-input v-model="form.customerPhone" placeholder="请输入联系电话" />
         </el-form-item>
         <el-form-item label="用餐日期" prop="dinnerTime">
           <el-date-picker clearable
@@ -218,6 +229,9 @@
             value-format="YYYY-MM-DD HH:mm:ss"
             placeholder="请选择用餐日期">
           </el-date-picker>
+        </el-form-item>
+        <el-form-item label="验证方式" prop="authType">
+          <el-input v-model="form.authType" placeholder="请输入验证方式" />
         </el-form-item>
         <el-form-item label="报餐时间" prop="bcTime">
           <el-date-picker clearable
@@ -228,7 +242,12 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item label="核销时间" prop="verificationTime">
-          <el-input v-model="form.verificationTime" placeholder="请输入核销时间" />
+          <el-date-picker clearable
+            v-model="form.verificationTime"
+            type="datetime"
+            value-format="YYYY-MM-DD HH:mm:ss"
+            placeholder="请选择核销时间">
+          </el-date-picker>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -259,31 +278,6 @@ const total = ref(0);
 
 const queryFormRef = ref<ElFormInstance>();
 const mealdetailFormRef = ref<ElFormInstance>();
-// const bc_dinnerStatus = {
-//   '0': '待用餐',
-//   '1': '已用餐',
-//   '2': '退款用餐',
-// }
-const bc_dinnerStatus = [
-  {
-    label: '待用餐',
-    value: '0',
-    elTagType: null,
-    elTagClass: ''
-  },
-  {
-    label: '已用餐',
-    value: '1',
-    elTagType: null,
-    elTagClass: ''
-  },
-  {
-    label: '退款用餐',
-    value: '2',
-    elTagType: null,
-    elTagClass: ''
-  },
-]
 
 const dialog = reactive<DialogOption>({
   visible: false,
@@ -298,6 +292,7 @@ const initFormData: MealdetailForm = {
   foodTypeid: undefined,
   orderId: undefined,
   sumPrice: undefined,
+  personId: undefined,
   customerName: undefined,
   customerPhone: undefined,
   dinnerTime: undefined,
@@ -318,6 +313,7 @@ const data = reactive<PageData<MealdetailForm, MealdetailQuery>>({
     foodTypeid: undefined,
     orderId: undefined,
     sumPrice: undefined,
+    personId: undefined,
     customerName: undefined,
     customerPhone: undefined,
     dinnerTime: undefined,
@@ -351,20 +347,23 @@ const data = reactive<PageData<MealdetailForm, MealdetailQuery>>({
     sumPrice: [
       { required: true, message: "金额不能为空", trigger: "blur" }
     ],
+    personId: [
+      { required: true, message: "用户ID不能为空", trigger: "blur" }
+    ],
     customerName: [
-      { required: true, message: "订餐人姓名不能为空", trigger: "blur" }
+      { required: true, message: "姓名不能为空", trigger: "blur" }
     ],
     customerPhone: [
-      { required: true, message: "订餐人联系电话不能为空", trigger: "blur" }
+      { required: true, message: "联系电话不能为空", trigger: "blur" }
     ],
     dinnerTime: [
       { required: true, message: "用餐日期不能为空", trigger: "blur" }
     ],
     dinnerStatus: [
-      { required: true, message: "用餐状态(0待用餐，1已用餐，2退款，3其他)不能为空", trigger: "change" }
+      { required: true, message: "用餐状态", trigger: "change" }
     ],
     authType: [
-      { required: true, message: "验证方式不能为空", trigger: "change" }
+      { required: true, message: "验证方式不能为空", trigger: "blur" }
     ],
     bcTime: [
       { required: true, message: "报餐时间不能为空", trigger: "blur" }
