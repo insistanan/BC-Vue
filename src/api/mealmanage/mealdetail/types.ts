@@ -7,7 +7,7 @@ export interface MealdetailVO {
   /**
    * 用餐时段
    */
-  foodGrounding: string;
+  foodGrounding: string | number;
 
   /**
    * 部门。部门id

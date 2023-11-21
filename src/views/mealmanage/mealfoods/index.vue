@@ -52,7 +52,11 @@
             <dict-tag :options="bc_mealservetime" :value="scope.row.foodGrounding"/>
           </template>
         </el-table-column>
-        <el-table-column label="菜品循环日期" align="center" prop="foodServerday" />
+        <el-table-column label="菜品循环日期" align="center" prop="foodServerday">
+          <template #default="scope">
+            {{ convertToWeekdays(scope.row.foodServerday) }}
+          </template>
+        </el-table-column>
         <el-table-column label="菜品类型" align="center" prop="foodTypeid">
           <template #default="scope">
             <dict-tag :options="bc_mealfoodtype" :value="scope.row.foodTypeid"/>
@@ -65,23 +69,7 @@
         </el-table-column>
         <el-table-column label="限购份数" align="center" prop="limitNum" />
         <el-table-column label="预设库存" align="center" prop="stockNum" />
-        <el-table-column label="首份减免" align="center" prop="firstReduce" />
-        <el-table-column label="描述" align="center" prop="explain" />
-        <el-table-column label="开放类型" align="center" prop="openType">
-          <template #default="scope">
-            <dict-tag :options="sys_open_range" :value="scope.row.openType"/>
-          </template>
-        </el-table-column>
-        <el-table-column label="开放部门" align="center" prop="enDept">
-          <template #default="scope">
-            <dict-tag :options="bc_dinerdept" :value="scope.row.enDept"/>
-          </template>
-        </el-table-column>
-        <el-table-column label="开放职务" align="center" prop="enJob">
-          <template #default="scope">
-            <dict-tag :options="bc_dinerjob" :value="scope.row.enJob"/>
-          </template>
-        </el-table-column>
+        <el-table-column label="描述" align="center" prop="remark" />
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
           <template #default="scope">
             <el-tooltip content="修改" placement="top">
@@ -123,13 +111,13 @@
         </el-form-item>
         <el-form-item label="菜品循环日期">
           <el-checkbox-group v-model="form.foodServerday" size="small">
-            <el-checkbox-button label="周一" key="1" name="type"></el-checkbox-button>
-            <el-checkbox-button label="周二" key="2" name="type"></el-checkbox-button>
-            <el-checkbox-button label="周三" key="3" name="type"></el-checkbox-button>
-            <el-checkbox-button label="周四" key="4" name="type"></el-checkbox-button>
-            <el-checkbox-button label="周五" key="5" name="type"></el-checkbox-button>
-            <el-checkbox-button label="周六" key="6" name="type"></el-checkbox-button>
-            <el-checkbox-button label="周日" key="7" name="type"></el-checkbox-button>
+            <el-checkbox-button label="1">周一</el-checkbox-button>
+            <el-checkbox-button label="2">周二</el-checkbox-button>
+            <el-checkbox-button label="3">周三</el-checkbox-button>
+            <el-checkbox-button label="4">周四</el-checkbox-button>
+            <el-checkbox-button label="5">周五</el-checkbox-button>
+            <el-checkbox-button label="6">周六</el-checkbox-button>
+            <el-checkbox-button label="7">周日</el-checkbox-button>
           </el-checkbox-group>
         </el-form-item>
         <el-form-item label="菜品类型" prop="foodTypeid">
@@ -158,11 +146,8 @@
         <el-form-item label="预设库存" prop="stockNum">
           <el-input v-model="form.stockNum" placeholder="请输入预设库存" />
         </el-form-item>
-        <el-form-item label="第一份减免" prop="firstReduce">
-          <el-input v-model="form.firstReduce" placeholder="请输入第一份减免" />
-        </el-form-item>
-        <el-form-item label="菜品描述" prop="explain">
-          <el-input v-model="form.explain" type="textarea" placeholder="请输入内容" />
+        <el-form-item label="菜品描述" prop="remark">
+          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
         </el-form-item>
         <el-form-item label="开放类型" prop="openType">
           <el-select v-model="form.openType" placeholder="请选择开放类型">
@@ -242,13 +227,13 @@ const initFormData: MealfoodsForm = {
   autoGrounding: undefined,
   limitNum: undefined,
   stockNum: undefined,
-  firstReduce: undefined,
-  explain: undefined,
+  remark: undefined,
   openType: undefined,
   enDept: undefined,
   enJob: undefined,
   foodImg: undefined,
 }
+
 const data = reactive<PageData<MealfoodsForm, MealfoodsQuery>>({
   form: {...initFormData},
   queryParams: {
@@ -262,8 +247,7 @@ const data = reactive<PageData<MealfoodsForm, MealfoodsQuery>>({
     autoGrounding: undefined,
     limitNum: undefined,
     stockNum: undefined,
-    firstReduce: undefined,
-    explain: undefined,
+    remark: undefined,
     openType: undefined,
     enDept: undefined,
     enJob: undefined,
@@ -293,30 +277,12 @@ const data = reactive<PageData<MealfoodsForm, MealfoodsQuery>>({
     autoGrounding: [
       { required: true, message: "是否自动上架，0-是，1-否不能为空", trigger: "change" }
     ],
-    limitNum: [
-      { required: true, message: "限购份数不能为空", trigger: "blur" }
-    ],
     stockNum: [
       { required: true, message: "预设库存不能为空", trigger: "blur" }
     ],
-    firstReduce: [
-      { required: true, message: "第一份减免不能为空", trigger: "blur" }
-    ],
-    explain: [
-      { required: true, message: "菜品描述不能为空", trigger: "blur" }
-    ],
     openType: [
       { required: true, message: "开放类型，0-指定部门开放，1-全部开放不能为空", trigger: "change" }
-    ],
-    enDept: [
-      { required: true, message: "开放部门不能为空", trigger: "change" }
-    ],
-    enJob: [
-      { required: true, message: "开放职务不能为空", trigger: "change" }
-    ],
-    foodImg: [
-      { required: true, message: "菜品图片不能为空", trigger: "blur" }
-    ],
+    ]
   }
 });
 
@@ -336,6 +302,16 @@ const cancel = () => {
   reset();
   dialog.visible = false;
 }
+
+const convertToWeekdays = (daysString: string) => {
+  const daysArray = daysString.split(',').map(Number);
+  const weekdays = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
+
+  // 根据daysArray中的数字获取相应的星期几
+  const convertedDays = daysArray.map(day => weekdays[day - 1]);
+
+  return convertedDays.join(', '); // 将转换后的星期几用逗号分隔
+};
 
 /** 表单重置 */
 const reset = () => {
@@ -375,6 +351,7 @@ const handleUpdate = async (row?: MealfoodsVO) => {
   const _id = row?.id || ids.value[0]
   const res = await getMealfoods(_id);
   Object.assign(form.value, res.data);
+  form.value.foodServerday = (form.value.foodServerday.split(',') as unknown[]).map(Number);
   dialog.visible = true;
   dialog.title = "修改菜品";
 }
@@ -385,8 +362,16 @@ const submitForm = () => {
     if (valid) {
       buttonLoading.value = true;
       if (form.value.id) {
+        if (form.value.foodServerday){
+          const foodServerdays: string = form.value.foodServerday.join(',');
+          form.value.foodServerday= foodServerdays;
+        }
         await updateMealfoods(form.value).finally(() =>  buttonLoading.value = false);
       } else {
+        if (form.value.foodServerday){
+          const foodServerdays: string = form.value.foodServerday.join(',');
+          form.value.foodServerday= foodServerdays;
+        }
         await addMealfoods(form.value).finally(() =>  buttonLoading.value = false);
       }
       proxy?.$modal.msgSuccess("修改成功");

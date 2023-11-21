@@ -88,7 +88,6 @@
             <dict-tag :options="bc_dinerjob" :value="scope.row.personDinerjobid"/>
           </template>
         </el-table-column>
-        <el-table-column label="头像" align="center" prop="personHeadimg" />
         <el-table-column label="状态" align="center" prop="status">
           <template #default="scope">
             <dict-tag :options="sys_common_status" :value="scope.row.status"/>
@@ -148,9 +147,6 @@
               :value="parseInt(dict.value)"
             ></el-option>
           </el-select>
-        </el-form-item>
-        <el-form-item label="头像" prop="personHeadimg">
-          <el-input v-model="form.personHeadimg" placeholder="请输入头像" />
         </el-form-item>
         <el-form-item label="状态" prop="status">
           <el-radio-group v-model="form.status">
@@ -244,9 +240,6 @@ const data = reactive<PageData<DinerpersonForm, DinerpersonQuery>>({
     ],
     personDinerjobid: [
       { required: true, message: "职务不能为空", trigger: "change" }
-    ],
-    personHeadimg: [
-      { required: true, message: "头像不能为空", trigger: "blur" }
     ],
     status: [
       { required: true, message: "状态不能为空", trigger: "change" }

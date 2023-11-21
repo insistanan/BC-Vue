@@ -52,7 +52,7 @@ export interface MealfoodsVO {
   /**
    * 菜品描述
    */
-  explain: string;
+  remark: string;
 
   /**
    * 开放类型，0-指定部门开放，1-全部开放
@@ -130,7 +130,7 @@ export interface MealfoodsForm extends BaseEntity {
   /**
    * 菜品描述
    */
-  explain?: string;
+  remark?: string;
 
   /**
    * 开放类型，0-指定部门开放，1-全部开放
@@ -204,7 +204,7 @@ export interface MealfoodsQuery extends PageQuery {
   /**
    * 菜品描述
    */
-  explain?: string;
+  remark?: string;
 
   /**
    * 开放类型，0-指定部门开放，1-全部开放

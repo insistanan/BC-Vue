@@ -77,33 +77,6 @@ const data = reactive<PageData<DinerpersonForm, DinerpersonQuery>>({
     }
   },
   rules: {
-    id: [
-      { required: true, message: "id不能为空", trigger: "blur" }
-    ],
-    personCode: [
-      { required: true, message: "工号不能为空", trigger: "blur" }
-    ],
-    personName: [
-      { required: true, message: "昵称不能为空", trigger: "blur" }
-    ],
-    personTel: [
-      { required: true, message: "手机号不能为空", trigger: "blur" }
-    ],
-    personCardno: [
-      { required: true, message: "职工卡号不能为空", trigger: "blur" }
-    ],
-    personDinerdeptid: [
-      { required: true, message: "部门不能为空", trigger: "blur" }
-    ],
-    personDinerjobid: [
-      { required: true, message: "职务不能为空", trigger: "blur" }
-    ],
-    personHeadimg: [
-      { required: true, message: "头像不能为空", trigger: "blur" }
-    ],
-    status: [
-      { required: true, message: "状态不能为空", trigger: "change" }
-    ],
   }
 });
 
