@@ -80,9 +80,9 @@
     <el-card shadow="never">
       <template #header>
         <el-row :gutter="10" class="mb8">
-<!--          <el-col :span="1.5">-->
-<!--            <el-button type="primary" plain icon="Plus" @click="handleAdd" v-hasPermi="['mealmanage:mealdetail:add']">新增</el-button>-->
-<!--          </el-col>-->
+          <el-col :span="1.5">
+            <el-button type="primary" plain icon="Plus" @click="handleAdd" v-hasPermi="['mealmanage:mealdetail:add']">新增</el-button>
+          </el-col>
 <!--          <el-col :span="1.5">-->
 <!--            <el-button type="success" plain icon="Edit" :disabled="single" @click="handleUpdate()" v-hasPermi="['mealmanage:mealdetail:edit']">修改</el-button>-->
 <!--          </el-col>-->
@@ -98,7 +98,6 @@
 
       <el-table v-loading="loading" :data="mealdetailList" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center" />
-<!--        <el-table-column label="id" align="center" prop="id" v-if="true" />-->
         <el-table-column label="用餐时段" align="center" prop="foodGrounding">
           <template #default="scope">
             <dict-tag :options="bc_mealservetime" :value="scope.row.foodGrounding"/>
@@ -137,16 +136,16 @@
         </el-table-column>
         <el-table-column label="核销时间" align="center" prop="verificationTime" />
 <!--        <el-table-column label="状态" align="center" prop="status" />-->
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-          <template #default="scope">
+<!--        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">-->
+<!--          <template #default="scope">-->
 <!--            <el-tooltip content="修改" placement="top">-->
 <!--              <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['mealmanage:mealdetail:edit']"></el-button>-->
 <!--            </el-tooltip>-->
 <!--            <el-tooltip content="删除" placement="top">-->
 <!--              <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['mealmanage:mealdetail:remove']"></el-button>-->
 <!--            </el-tooltip>-->
-          </template>
-        </el-table-column>
+<!--          </template-->
+<!--        </el-table-column>-->
       </el-table>
 
       <pagination
