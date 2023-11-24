@@ -22,6 +22,7 @@
     <el-button v-if="imageUrl" @click="handleDeleteImage" type="danger" style="margin-top: 20px;">
       删除图片
     </el-button>
+
   </div>
 </template>
 
@@ -42,7 +43,7 @@ const handleBeforeUpload = (file: File) => {
 const handleUploadSuccess = (response: any, file: File) => {
   // 上传成功后的回调，response 为服务端返回的数据
   if (response.code === 200) {
-    imageUrl.value = response.data.url;
+    imageUrl.value = response.msg;
   } else {
     // 上传失败时的处理
     ElMessageBox.alert('上传失败', '错误提示', { type: 'error' });
