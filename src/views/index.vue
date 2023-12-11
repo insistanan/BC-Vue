@@ -5,31 +5,31 @@
         <el-card>
           <template v-slot:header>
             <div class="clearfix">
-              <span>用餐情况</span>
+              <span>今日用餐情况</span>
             </div>
           </template>
           <div class="card-content">
-            <div class="ant-col ant-col-6"><h2  class="item-title">用餐份数</h2><h2 class="item-data">0</h2></div>
-            <div class="ant-col ant-col-6"><h2  class="item-title">报餐份数</h2><h2 class="item-data">0</h2></div>
-            <div class="ant-col ant-col-6"><h2  class="item-title">退餐率</h2><h2 class="item-data">0</h2></div>
-            <div class="ant-col ant-col-6"><h2  class="item-title">人均餐费</h2><h2 class="item-data">0</h2></div>
-            <div class="ant-col ant-col-6"><h2  class="item-title">已退餐</h2><h2 class="item-data">0</h2></div>
-            <div class="ant-col ant-col-6"><h2  class="item-title">评价数量</h2><h2 class="item-data">0</h2></div>
+            <div class="ant-col ant-col-6"><h2  class="item-title">用餐份数</h2><h2 class="item-data">{{ dinerNum }}</h2></div>
+            <div class="ant-col ant-col-6"><h2  class="item-title">报餐份数</h2><h2 class="item-data">{{ orderNum }}</h2></div>
+            <div class="ant-col ant-col-6"><h2  class="item-title">已退餐</h2><h2 class="item-data">{{ canceNum }}</h2></div>
+            <div class="ant-col ant-col-6"><h2  class="item-title">退餐率</h2><h2 class="item-data">{{ cancelPerNum }}</h2></div>
+            <div class="ant-col ant-col-6"><h2  class="item-title">人均餐费</h2><h2 class="item-data">{{ averageNum }}</h2></div>
+            <div class="ant-col ant-col-6"><h2  class="item-title">评价数量</h2><h2 class="item-data">{{ commentNum }}</h2></div>
           </div>
         </el-card>
       </el-col>
     </el-row>
     <el-row :gutter="20">
-      <el-col :sm="24" :md="16" style="padding-left: 20px">
+      <el-col :sm="24" :md="16" style="padding-left: 20px; padding-top: 8px">
         <el-card>
-          <template v-slot:header>
-            <div class="clearfix">
-              <span>近十日报餐营收</span>
-            </div>
-          </template>
-          <div class="chart-container">
-            <div ref="chart" class="chart" id="chart"></div>
-          </div>
+          <h3>近十日用餐统计</h3>
+          <LineChart />
+        </el-card>
+      </el-col>
+      <el-col :sm="24" :md="8" style="padding-left: 20px; padding-top: 8px">
+        <el-card>
+          <h3>昨日时段用餐统计</h3>
+          <PieChart />
         </el-card>
       </el-col>
     </el-row>
@@ -37,62 +37,30 @@
 </template>
 
 <script setup name="Index" lang="ts">
-import axios from 'axios';
-import * as echarts from 'echarts';
+import { todayMealDetail } from '@/api/index';
+import PieChart from './PieChart.vue';
+import LineChart from './LineChart.vue';
 
-const reportMealsCount = ref(0) // Replace 0 with the actual value
-const consumedMealsCount = ref(0) // Replace 0 with the actual value
-const returnMealRate = ref(0) // Replace 0 with the actual value
-const averageMealCost = ref(0) // Replace 0 with the actual value
+let dinerNum = ref(0);
+let orderNum = ref(0);
+let canceNum = ref(0);
+let cancelPerNum = ref(0);
+let averageNum = ref(0);
+let commentNum = ref(0);
 
-const data = {
-  chartData: [
-    { time: '2022-01-01', amount: 200 },
-    { time: '2022-01-02', amount: 220 },
-    { time: '2022-01-03', amount: 250 },
-    { time: '2022-01-04', amount: 180 },
-    { time: '2022-01-05', amount: 210 },
-    { time: '2022-01-06', amount: 190 },
-    { time: '2022-01-07', amount: 230 },
-    { time: '2022-01-08', amount: 240 },
-    { time: '2022-01-09', amount: 260 },
-    { time: '2022-01-10', amount: 280 },
-  ], // 存储曲线折现图的数据
-};
-
-onMounted(() => {
-  // 在mounted生命周期钩子中，初始化ECharts图表
-  const chart = echarts.init(document.getElementById('chart'));
-  chart.setOption({
-    xAxis: {
-      type: 'category',
-      data: data.chartData.map((item) => item.time),
-    },
-    yAxis: {
-      type: 'value',
-    },
-    series: [{
-      type: 'line',
-      data: data.chartData.map((item) => item.amount),
-    }],
-  });
-})
-
-const goTarget = (url:string) => {
-  window.open(url, '__blank')
-}
+onMounted(async () => {
+  const res = await todayMealDetail();
+  dinerNum.value = res.data.dinerNum;
+  orderNum.value = res.data.orderNum;
+  canceNum.value = res.data.canceNum;
+  cancelPerNum.value = res.data.cancelPerNum;
+  averageNum.value = res.data.averageNum;
+  commentNum.value = res.data.commentNum;
+});
 </script>
 
 <style scoped lang="scss">
-.chart-container {
-  margin-top: 3px;
-  height: 320px;
-}
 
-.chart {
-  width: 100%;
-  height: 100%;
-}
 .card-content {
   display: flex;
   flex-wrap: wrap;

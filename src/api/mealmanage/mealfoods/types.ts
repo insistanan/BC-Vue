@@ -22,6 +22,7 @@ export interface MealfoodsVO {
   /**
    * 菜品上架日期，1-7代表周一至周日
    */
+  foodServerdayArray: number[];
   foodServerday: string;
 
   /**
@@ -101,7 +102,7 @@ export interface MealfoodsForm extends BaseEntity {
    * 菜品上架日期，1-7代表周一至周日
    */
   foodServerday?: string;
-
+  foodServerdayArray?: string[];
   /**
    * 菜品类型
    */

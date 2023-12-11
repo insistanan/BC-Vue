@@ -134,7 +134,7 @@
                 v-for="dict in bc_dinerdept"
                 :key="dict.value"
                 :label="dict.label"
-                :value="parseInt(dict.value)"
+                :value="dict.value"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -144,7 +144,7 @@
                 v-for="dict in bc_dinerjob"
                 :key="dict.value"
                 :label="dict.label"
-                :value="parseInt(dict.value)"
+                :value="dict.value"
             ></el-option>
           </el-select>
         </el-form-item>

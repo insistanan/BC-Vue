@@ -8,12 +8,7 @@
           </el-form-item>
           <el-form-item label="菜品类型" prop="foodTypeid">
             <el-select v-model="queryParams.foodTypeid" placeholder="请选择菜品类型" clearable>
-              <el-option
-                v-for="dict in bc_mealfoodtype"
-                :key="dict.value"
-                :label="dict.label"
-                :value="dict.value"
-              />
+              <el-option v-for="dict in bc_mealfoodtype" :key="dict.value" :label="dict.label" :value="dict.value" />
             </el-select>
           </el-form-item>
           <el-form-item>
@@ -31,10 +26,14 @@
             <el-button type="primary" plain icon="Plus" @click="handleAdd" v-hasPermi="['mealmanage:mealfoods:add']">新增</el-button>
           </el-col>
           <el-col :span="1.5">
-            <el-button type="success" plain icon="Edit" :disabled="single" @click="handleUpdate()" v-hasPermi="['mealmanage:mealfoods:edit']">修改</el-button>
+            <el-button type="success" plain icon="Edit" :disabled="single" @click="handleUpdate()" v-hasPermi="['mealmanage:mealfoods:edit']"
+              >修改</el-button
+            >
           </el-col>
           <el-col :span="1.5">
-            <el-button type="danger" plain icon="Delete" :disabled="multiple" @click="handleDelete()" v-hasPermi="['mealmanage:mealfoods:remove']">删除</el-button>
+            <el-button type="danger" plain icon="Delete" :disabled="multiple" @click="handleDelete()" v-hasPermi="['mealmanage:mealfoods:remove']"
+              >删除</el-button
+            >
           </el-col>
           <el-col :span="1.5">
             <el-button type="warning" plain icon="Download" @click="handleExport" v-hasPermi="['mealmanage:mealfoods:export']">导出</el-button>
@@ -49,7 +48,7 @@
         <el-table-column label="菜品价格" align="center" prop="foodPrice" />
         <el-table-column label="用餐时间段" align="center" prop="foodGrounding">
           <template #default="scope">
-            <dict-tag :options="bc_mealservetime" :value="scope.row.foodGrounding"/>
+            <dict-tag :options="bc_mealservetime" :value="scope.row.foodGrounding" />
           </template>
         </el-table-column>
         <el-table-column label="菜品循环日期" align="center" prop="foodServerday">
@@ -59,12 +58,12 @@
         </el-table-column>
         <el-table-column label="菜品类型" align="center" prop="foodTypeid">
           <template #default="scope">
-            <dict-tag :options="bc_mealfoodtype" :value="scope.row.foodTypeid"/>
+            <dict-tag :options="bc_mealfoodtype" :value="scope.row.foodTypeid" />
           </template>
         </el-table-column>
         <el-table-column label="自动上架" align="center" prop="autoGrounding">
           <template #default="scope">
-            <dict-tag :options="sys_yes_no" :value="scope.row.autoGrounding"/>
+            <dict-tag :options="sys_yes_no" :value="scope.row.autoGrounding" />
           </template>
         </el-table-column>
         <el-table-column label="限购份数" align="center" prop="limitNum" />
@@ -82,13 +81,7 @@
         </el-table-column>
       </el-table>
 
-      <pagination
-        v-show="total>0"
-        :total="total"
-        v-model:page="queryParams.pageNum"
-        v-model:limit="queryParams.pageSize"
-        @pagination="getList"
-      />
+      <pagination v-show="total>0" :total="total" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize" @pagination="getList" />
     </el-card>
     <!-- 添加或修改菜品对话框 -->
     <el-dialog :title="dialog.title" v-model="dialog.visible" width="500px" append-to-body>
@@ -101,12 +94,7 @@
         </el-form-item>
         <el-form-item label="用餐时间段" prop="foodGrounding">
           <el-select v-model="form.foodGrounding" placeholder="请选择菜品用餐时间段">
-            <el-option
-              v-for="dict in bc_mealservetime"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
+            <el-option v-for="dict in bc_mealservetime" :key="dict.value" :label="dict.label" :value="dict.value"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="菜品循环日期">
@@ -122,22 +110,12 @@
         </el-form-item>
         <el-form-item label="菜品类型" prop="foodTypeid">
           <el-select v-model="form.foodTypeid" placeholder="请选择菜品类型">
-            <el-option
-              v-for="dict in bc_mealfoodtype"
-              :key="dict.value"
-              :label="dict.label"
-              :value="parseInt(dict.value)"
-            ></el-option>
+            <el-option v-for="dict in bc_mealfoodtype" :key="dict.value" :label="dict.label" :value="parseInt(dict.value)"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="是否自动上架" prop="autoGrounding">
           <el-select v-model="form.autoGrounding" placeholder="请选择是否自动上架">
-            <el-option
-              v-for="dict in sys_yes_no"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
+            <el-option v-for="dict in sys_yes_no" :key="dict.value" :label="dict.label" :value="dict.value"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="限购份数" prop="limitNum">
@@ -151,36 +129,21 @@
         </el-form-item>
         <el-form-item label="开放类型" prop="openType">
           <el-select v-model="form.openType" placeholder="请选择开放类型">
-            <el-option
-              v-for="dict in sys_open_range"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
+            <el-option v-for="dict in sys_open_range" :key="dict.value" :label="dict.label" :value="dict.value"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="开放部门" prop="enDept">
           <el-select v-model="form.enDept" placeholder="请选择开放部门">
-            <el-option
-              v-for="dict in bc_dinerdept"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
+            <el-option v-for="dict in bc_dinerdept" :key="dict.value" :label="dict.label" :value="dict.value"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="开放职务" prop="enJob">
           <el-select v-model="form.enJob" placeholder="请选择开放职务">
-            <el-option
-              v-for="dict in bc_dinerjob"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
+            <el-option v-for="dict in bc_dinerjob" :key="dict.value" :label="dict.label" :value="dict.value"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="菜品图片" prop="foodImg">
-          <image-upload v-model="form.foodImg"/>
+          <image-upload v-model="form.foodImg" />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -400,5 +363,4 @@ const handleExport = () => {
 onMounted(() => {
   getList();
 });
-
 </script>

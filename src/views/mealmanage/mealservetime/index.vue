@@ -54,12 +54,12 @@
         </el-table-column>
         <el-table-column label="开始时间" align="center" prop="servetimeBegin" />
         <el-table-column label="结束时间" align="center" prop="servetimeEnd" />
-        <el-table-column label="报餐提醒状态" align="center" prop="servetimeRemindstatus">
-          <template #default="scope">
-            <dict-tag :options="sys_open_status" :value="scope.row.servetimeRemindstatus"/>
-          </template>
-        </el-table-column>
-        <el-table-column label="报餐提醒时间" align="center" prop="servetimeRemind" />
+<!--        <el-table-column label="报餐提醒状态" align="center" prop="servetimeRemindstatus">-->
+<!--          <template #default="scope">-->
+<!--            <dict-tag :options="sys_open_status" :value="scope.row.servetimeRemindstatus"/>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
+<!--        <el-table-column label="报餐提醒时间" align="center" prop="servetimeRemind" />-->
         <el-table-column label="报餐截止天数" align="center" prop="servetimeRepotrendday" />
         <el-table-column label="报餐截止时间" align="center" prop="servetimeRepotrendtime" />
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -100,54 +100,54 @@
             >{{dict.label}}</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="开始时间" prop="servetimeBegin">
+        <el-form-item label="开始时间" prop="servetimeBeginHour">
           <el-col :span="5">
-            <el-input v-model="form.servetimeBegin"/>
+            <el-input type="number" v-model="form.servetimeBeginHour" prop="servetimeBeginHour" />
           </el-col>
           <el-col class="line" :span="2">时</el-col>
           <el-col :span="5">
-            <el-input v-model="form.servetimeBegin"/>
+            <el-input type="number" v-model="form.servetimeBeginMin" prop="servetimeBeginMin" />
           </el-col>
           <el-col class="line" :span="2">分</el-col>
         </el-form-item>
-        <el-form-item label="结束时间" prop="servetimeEnd">
+        <el-form-item label="结束时间" prop="servetimeEndHour">
           <el-col :span="5">
-            <el-input v-model="form.servetimeEnd"/>
+            <el-input type="number" v-model="form.servetimeEndHour" />
           </el-col>
           <el-col class="line" :span="2">时</el-col>
           <el-col :span="5">
-            <el-input v-model="form.servetimeEnd"/>
+            <el-input type="number" v-model="form.servetimeEndMin" />
           </el-col>
           <el-col class="line" :span="2">分</el-col>
         </el-form-item>
-        <el-form-item label="报餐提醒状态" prop="servetimeRemindstatus">
-          <el-radio-group v-model="form.servetimeRemindstatus">
-            <el-radio
-              v-for="dict in sys_open_status"
-              :key="dict.value"
-              :label="dict.value"
-            >{{dict.label}}</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="报餐提醒时间" prop="servetimeRemind">
-          <el-col :span="5">
-            <el-input v-model="form.servetimeRemind"/>
-          </el-col>
-          <el-col class="line" :span="2">时</el-col>
-          <el-col :span="5">
-            <el-input v-model="form.servetimeRemind"/>
-          </el-col>
-        </el-form-item>
+<!--        <el-form-item label="报餐提醒状态" prop="servetimeRemindstatus">-->
+<!--          <el-radio-group v-model="form.servetimeRemindstatus">-->
+<!--            <el-radio-->
+<!--              v-for="dict in sys_open_status"-->
+<!--              :key="dict.value"-->
+<!--              :label="dict.value"-->
+<!--            >{{dict.label}}</el-radio>-->
+<!--          </el-radio-group>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="报餐提醒时间" prop="servetimeRemind">-->
+<!--          <el-col :span="5">-->
+<!--            <el-input v-model="form.servetimeRemind"/>-->
+<!--          </el-col>-->
+<!--          <el-col class="line" :span="2">时</el-col>-->
+<!--          <el-col :span="5">-->
+<!--            <el-input v-model="form.servetimeRemind"/>-->
+<!--          </el-col>-->
+<!--        </el-form-item>-->
         <el-form-item label="报餐截止天数" prop="servetimeRepotrendday">
           <el-input v-model="form.servetimeRepotrendday" type="number" placeholder="请输入报餐截止天数" />
         </el-form-item>
-        <el-form-item label="报餐截止时间" prop="servetimeRepotrendtime">
+        <el-form-item label="报餐截止时间" prop="servetimeRepotrendtimeHour">
           <el-col :span="5">
-            <el-input v-model="form.servetimeRepotrendtime"/>
+            <el-input type="number" v-model="form.servetimeRepotrendtimeHour" />
           </el-col>
           <el-col class="line" :span="2">时</el-col>
           <el-col :span="5">
-            <el-input v-model="form.servetimeRepotrendtime"/>
+            <el-input type="number" v-model="form.servetimeRepotrendtimeMin" />
           </el-col>
         </el-form-item>
       </el-form>
@@ -190,12 +190,15 @@ const initFormData: MealservetimeForm = {
   servetimeName: undefined,
   servetimeNum: undefined,
   servetimeStatus: undefined,
-  servetimeBegin: undefined,
-  servetimeEnd: undefined,
+  servetimeBeginHour: undefined,
+  servetimeBeginMin: undefined,
+  servetimeEndHour: undefined,
+  servetimeEndMin: undefined,
   servetimeRemindstatus: undefined,
   servetimeRemind: undefined,
   servetimeRepotrendday: undefined,
-  servetimeRepotrendtime: undefined,
+  servetimeRepotrendtimeHour: undefined,
+  servetimeRepotrendtimeMin: undefined,
 }
 const data = reactive<PageData<MealservetimeForm, MealservetimeQuery>>({
   form: {...initFormData},
@@ -205,12 +208,6 @@ const data = reactive<PageData<MealservetimeForm, MealservetimeQuery>>({
     servetimeName: undefined,
     servetimeNum: undefined,
     servetimeStatus: undefined,
-    servetimeBegin: undefined,
-    servetimeEnd: undefined,
-    servetimeRemindstatus: undefined,
-    servetimeRemind: undefined,
-    servetimeRepotrendday: undefined,
-    servetimeRepotrendtime: undefined,
     params: {
     }
   },
@@ -227,23 +224,86 @@ const data = reactive<PageData<MealservetimeForm, MealservetimeQuery>>({
     servetimeStatus: [
       { required: true, message: "状态，0-开启，1关闭不能为空", trigger: "change" }
     ],
-    servetimeBegin: [
-      { required: true, message: "开始时间不能为空", trigger: "blur" }
+    servetimeBeginHour: [
+      { required: true, message: "开始时间不能为空", trigger: "blur" },
+      {
+        validator: (rule, value, callback) => {
+          if (value < 0 || value > 23) {
+            callback(new Error("开始时间小时必须在0到23之间"));
+          } else {
+            callback();
+          }
+        },
+        trigger: "blur"
+      }
     ],
-    servetimeEnd: [
-      { required: true, message: "结束时间不能为空", trigger: "blur" }
+    servetimeBeginMin: [
+      { required: true, message: "开始时间不能为空", trigger: "blur" },
+      {
+        validator: (rule, value, callback) => {
+          if (value < 0 || value > 23) {
+            callback(new Error("开始时间分钟必须在0到59之间"));
+          } else {
+            callback();
+          }
+        },
+        trigger: "blur"
+      }
     ],
-    servetimeRemindstatus: [
-      { required: true, message: "报餐提醒状态，0-开启，1关闭不能为空", trigger: "change" }
+    servetimeEndHour: [
+      { required: true, message: "结束时间不能为空", trigger: "blur" },
+      {
+        validator: (rule, value, callback) => {
+          if (value < 0 || value > 23) {
+            callback(new Error("结束时间小时必须在0到23之间"));
+          } else {
+            callback();
+          }
+        },
+        trigger: "blur"
+      }
     ],
-    servetimeRemind: [
-      { required: true, message: "报餐提醒时间不能为空", trigger: "blur" }
+    servetimeEndMin: [
+      { required: true, message: "结束时间不能为空", trigger: "blur" },
+      {
+        validator: (rule, value, callback) => {
+          if (value < 0 || value > 23) {
+            callback(new Error("结束时间分钟必须在0到59之间"));
+          } else {
+            callback();
+          }
+        },
+        trigger: "blur"
+      }
     ],
     servetimeRepotrendday: [
       { required: true, message: "报餐截止天数不能为空", trigger: "blur" }
     ],
-    servetimeRepotrendtime: [
-      { required: true, message: "报餐截止时间不能为空", trigger: "blur" }
+    servetimeRepotrendtimeHour: [
+      { required: true, message: "报餐截止时间不能为空", trigger: "blur" },
+      {
+        validator: (rule, value, callback) => {
+          if (value < 0 || value > 23) {
+            callback(new Error("报餐截止时间分钟必须在0到59之间"));
+          } else {
+            callback();
+          }
+        },
+        trigger: "blur"
+      }
+    ],
+    servetimeRepotrendtimeMin: [
+      { required: true, message: "报餐截止时间不能为空", trigger: "blur" },
+      {
+        validator: (rule, value, callback) => {
+          if (value < 0 || value > 23) {
+            callback(new Error("报餐截止时间分钟必须在0到59之间"));
+          } else {
+            callback();
+          }
+        },
+        trigger: "blur"
+      }
     ],
   }
 });
@@ -311,7 +371,34 @@ const handleUpdate = async (row?: MealservetimeVO) => {
 const submitForm = () => {
   mealservetimeFormRef.value?.validate(async (valid: boolean) => {
     if (valid) {
+      if (form.value.servetimeBeginMin < 0 || form.value.servetimeBeginMin > 59) {
+        proxy?.$modal.msgError("用餐开始时间分钟必须在0到59之间");
+        return;
+      }
+      if (form.value.servetimeEndMin < 0 || form.value.servetimeEndMin > 59) {
+        proxy?.$modal.msgError("用餐截止时间分钟必须在0到59之间");
+        return;
+      }
+      if (form.value.servetimeRepotrendtimeMin < 0 || form.value.servetimeRepotrendtimeMin > 59) {
+        proxy?.$modal.msgError("报餐截止时间分钟必须在0到59之间");
+        return;
+      }
+      if (form.value.servetimeBeginMin == 0 ) {
+        form.value.servetimeBeginMin = "00";
+      }
+      if (form.value.servetimeEndMin == 0 ) {
+        form.value.servetimeEndMin = "00";
+      }
+      if (form.value.servetimeRepotrendtimeMin == 0 ) {
+        form.value.servetimeRepotrendtimeMin = "00";
+      }
       buttonLoading.value = true;
+      const servetimeBegin: string = form.value.servetimeBeginHour + ":" + form.value.servetimeBeginMin;
+      form.value.servetimeBegin= servetimeBegin;
+      const servetimeEnd: string = form.value.servetimeEndHour + ":" + form.value.servetimeEndMin;
+      form.value.servetimeEnd= servetimeEnd;
+      const servetimeRepotrendtime: string = form.value.servetimeRepotrendtimeHour + ":" + form.value.servetimeRepotrendtimeMin;
+      form.value.servetimeRepotrendtime= servetimeRepotrendtime;
       if (form.value.id) {
         await updateMealservetime(form.value).finally(() =>  buttonLoading.value = false);
       } else {

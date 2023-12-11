@@ -22,12 +22,14 @@ export interface MealservetimeVO {
   /**
    * 开始时间
    */
-  servetimeBegin: string;
+  servetimeBeginHour: string;
+  servetimeBeginMin: string;
 
+  servetimeEndHour: string;
   /**
    * 结束时间
    */
-  servetimeEnd: string;
+  servetimeEndMin: string;
 
   /**
    * 报餐提醒状态，0-开启，1关闭
@@ -47,7 +49,8 @@ export interface MealservetimeVO {
   /**
    * 报餐截止时间
    */
-  servetimeRepotrendtime: string;
+  servetimeRepotrendtimeHour: string;
+  servetimeRepotrendtimeMin?: string;
 
 }
 
@@ -75,12 +78,20 @@ export interface MealservetimeForm extends BaseEntity {
   /**
    * 开始时间
    */
-  servetimeBegin?: string;
+  servetimeBeginHour?: string;
+  /**
+   * 开始时间
+   */
+  servetimeBeginMin?: string;
 
   /**
    * 结束时间
    */
-  servetimeEnd?: string;
+  servetimeEndHour?: string;
+  /**
+   * 结束时间
+   */
+  servetimeEndMin?: string;
 
   /**
    * 报餐提醒状态，0-开启，1关闭
@@ -100,8 +111,8 @@ export interface MealservetimeForm extends BaseEntity {
   /**
    * 报餐截止时间
    */
-  servetimeRepotrendtime?: string;
-
+  servetimeRepotrendtimeHour?: string;
+  servetimeRepotrendtimeMin?: string;
 }
 
 export interface MealservetimeQuery extends PageQuery {
@@ -120,36 +131,6 @@ export interface MealservetimeQuery extends PageQuery {
    * 状态，0-开启，1关闭
    */
   servetimeStatus?: string;
-
-  /**
-   * 开始时间
-   */
-  servetimeBegin?: string;
-
-  /**
-   * 结束时间
-   */
-  servetimeEnd?: string;
-
-  /**
-   * 报餐提醒状态，0-开启，1关闭
-   */
-  servetimeRemindstatus?: string;
-
-  /**
-   * 报餐提醒时间
-   */
-  servetimeRemind?: string;
-
-  /**
-   * 报餐截止天数
-   */
-  servetimeRepotrendday?: string;
-
-  /**
-   * 报餐截止时间
-   */
-  servetimeRepotrendtime?: string;
 
     /**
      * 日期范围参数

@@ -7,22 +7,13 @@
       :before-upload="handleBeforeUpload"
       :on-success="handleUploadSuccess"
       :headers="headers"
-
     >
       <el-button type="primary">上传图片</el-button>
     </el-upload>
 
-    <el-image
-      v-if="imageUrl"
-      style="max-width: 100%; margin-top: 20px;"
-      :src="imageUrl"
-      fit="contain"
-    ></el-image>
+    <el-image v-if="imageUrl" style="max-width: 100%; margin-top: 20px;" :src="imageUrl" fit="contain"></el-image>
 
-    <el-button v-if="imageUrl" @click="handleDeleteImage" type="danger" style="margin-top: 20px;">
-      删除图片
-    </el-button>
-
+    <el-button v-if="imageUrl" @click="handleDeleteImage" type="danger" style="margin-top: 20px;"> 删除图片 </el-button>
   </div>
 </template>
 

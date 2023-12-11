@@ -51,7 +51,11 @@
 
       <el-table v-loading="loading" :data="mealdailymenuList" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center" />
-        <el-table-column label="菜品图片" align="center" prop="foodImg" />
+        <el-table-column label="菜品图片" align="center" prop="foodImg" width="100">
+          <template #default="scope">
+            <image-preview :src="scope.row.foodImg" :width="50" :height="50"/>
+          </template>
+        </el-table-column>
         <el-table-column label="菜品名称" align="center" prop="foodName" />
         <el-table-column label="菜品价格" align="center" prop="foodPrice" />
         <el-table-column label="预设库存" align="center" prop="stockNum" />

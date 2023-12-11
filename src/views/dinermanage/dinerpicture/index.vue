@@ -1,32 +1,27 @@
 <template>
   <div class="p-2">
-
     <el-card shadow="never">
       <template #header>
         <el-row :gutter="10" class="mb8">
           <el-col :span="1.5">
-            <el-button type="primary" plain icon="Plus" @click="handleAdd" v-hasPermi="['dinermanage:dinerperson:query']">获取加入食堂二维码</el-button>
+            <el-button type="primary" plain icon="Plus" @click="handleAdd" v-hasPermi="['dinermanage:dinerperson:query']"
+              >获取加入食堂二维码</el-button
+            >
           </el-col>
         </el-row>
       </template>
 
-<!--      <pagination-->
-<!--          v-show="total>0"-->
-<!--          :total="total"-->
-<!--          v-model:page="queryParams.pageNum"-->
-<!--          v-model:limit="queryParams.pageSize"-->
-<!--          @pagination="getList"-->
-<!--      />-->
+      <!--      <pagination-->
+      <!--          v-show="total>0"-->
+      <!--          :total="total"-->
+      <!--          v-model:page="queryParams.pageNum"-->
+      <!--          v-model:limit="queryParams.pageSize"-->
+      <!--          @pagination="getList"-->
+      <!--      />-->
     </el-card>
     <!-- 添加或修改用餐人员信息对话框 -->
     <el-dialog :title="dialog.title" v-model="dialog.visible" width="500px" append-to-body>
-      <qrcode-vue
-        :value="qrCodeValue"
-        :size="200"
-        :color="'#000000'"
-        :background-color="'#ffffff'"
-        align="center"
-      ></qrcode-vue>
+      <qrcode-vue :value="qrCodeValue" :size="200" :color="'#000000'" :background-color="'#ffffff'" align="center"></qrcode-vue>
     </el-dialog>
   </div>
 </template>
