@@ -10,17 +10,23 @@
         </el-row>
       </template>
 
-      <pagination
-          v-show="total>0"
-          :total="total"
-          v-model:page="queryParams.pageNum"
-          v-model:limit="queryParams.pageSize"
-          @pagination="getList"
-      />
+<!--      <pagination-->
+<!--          v-show="total>0"-->
+<!--          :total="total"-->
+<!--          v-model:page="queryParams.pageNum"-->
+<!--          v-model:limit="queryParams.pageSize"-->
+<!--          @pagination="getList"-->
+<!--      />-->
     </el-card>
     <!-- 添加或修改用餐人员信息对话框 -->
     <el-dialog :title="dialog.title" v-model="dialog.visible" width="500px" append-to-body>
-
+      <qrcode-vue
+        :value="qrCodeValue"
+        :size="200"
+        :color="'#000000'"
+        :background-color="'#ffffff'"
+        align="center"
+      ></qrcode-vue>
     </el-dialog>
   </div>
 </template>
@@ -28,6 +34,8 @@
 <script setup name="Dinerperson" lang="ts">
 import { listDinerperson, getDinerperson, delDinerperson, addDinerperson, updateDinerperson } from '@/api/dinermanage/dinerperson';
 import { DinerpersonVO, DinerpersonQuery, DinerpersonForm } from '@/api/dinermanage/dinerperson/types';
+import QrcodeVue from 'qrcode.vue';
+const qrCodeValue = '添加用餐人员信息';
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 const { sys_data_status } = toRefs<any>(proxy?.useDict('sys_data_status'));
@@ -40,6 +48,10 @@ const ids = ref<Array<string | number>>([]);
 const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
+
+
+
+
 
 const queryFormRef = ref<ElFormInstance>();
 const dinerpersonFormRef = ref<ElFormInstance>();

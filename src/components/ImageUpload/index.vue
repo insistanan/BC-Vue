@@ -1,7 +1,7 @@
 <template>
   <el-upload
     class="avatar-uploader"
-    action="http://localhost:80/dev-api/resource/oss/upload"
+    action="http://localhost:80/api/resource/oss/upload"
     :show-file-list="false"
     :headers="headers"
     :on-success="handleAvatarSuccess"
@@ -55,7 +55,9 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
 onBeforeMount(() => {
   imageUrl.value = props.modelValue
 })
-
+onUpdated( () => {
+  imageUrl.value = props.modelValue
+})
 </script>
 
 <style scoped>

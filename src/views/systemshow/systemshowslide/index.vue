@@ -68,7 +68,7 @@
           <el-input v-model="form.sort" placeholder="请输入排序" />
         </el-form-item>
         <el-form-item label="图片" prop="path">
-          <image-upload v-model="form.path"/>
+          <image-upload v-model="form.path" />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -197,6 +197,7 @@ const handleUpdate = async (row?: SystemshowslideVO) => {
   const _id = row?.id || ids.value[0]
   const res = await getSystemshowslide(_id);
   Object.assign(form.value, res.data);
+  console.log(form.value.path)
   dialog.visible = true;
   dialog.title = "修改首页幻灯片";
 }
